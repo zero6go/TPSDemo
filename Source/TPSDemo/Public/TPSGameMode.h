@@ -32,28 +32,22 @@ public:
 	TSubclassOf<AActor> Barrel;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	int32 WeaponSpawnCount;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float WeaponSpawnTime;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	TSubclassOf<AActor> WeaponStart;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	TSubclassOf<AActor> Weapon1;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	TSubclassOf<AActor> Weapon2;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	TSubclassOf<AActor> Weapon3;
+	TArray<TSubclassOf<AActor>> Weapons;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Buff")
+	int32 BuffSpawnCount;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Buff")
 	float BuffSpawnTime;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Buff")
 	TSubclassOf<AActor> BuffStart;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Buff")
-	TSubclassOf<AActor> Buff1;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Buff")
-	TSubclassOf<AActor> Buff2;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Buff")
-	TSubclassOf<AActor> Buff3;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Buff")
-	TSubclassOf<AActor> Buff4;
+	TArray<TSubclassOf<AActor>> Buffs;
 
 private:
 	TArray<AActor*> TrackerBotStarts;

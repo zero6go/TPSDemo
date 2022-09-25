@@ -10,6 +10,8 @@ ATPSGameMode::ATPSGameMode()
 	bInSpeedDown = false;
 	TrackerBotCount = 0;
 	BarrelCount = 0;
+	WeaponSpawnCount = 1;
+	BuffSpawnCount = 1;
 	TrackerBotSpawnTime = 10.0f;
 	WeaponSpawnTime = 6.0f;
 	BuffSpawnTime = 5.0f;
@@ -74,54 +76,30 @@ void ATPSGameMode::SpawnTrackerBotAndBarrel()
 
 void ATPSGameMode::SpawnWeapon()
 {
-	if (WeaponStarts.Num() > 0)
+	for (int i = 0; i < WeaponSpawnCount; i++)
 	{
-		AActor* TargetStart = WeaponStarts[UKismetMathLibrary::RandomInteger(WeaponStarts.Num())];
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
-		int32 RandomNumber = UKismetMathLibrary::RandomInteger(100);
-		TSubclassOf<AActor> TargetWeapon;
-		if (RandomNumber < 50)
+		if (WeaponStarts.Num() > 0 && Weapons.Num() > 0)
 		{
-			TargetWeapon = Weapon1;
+			AActor* TargetStart = WeaponStarts[UKismetMathLibrary::RandomInteger(WeaponStarts.Num())];
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
+			int32 RandomNumber = UKismetMathLibrary::RandomInteger(Weapons.Num());
+			GetWorld()->SpawnActor<AActor>(Weapons[RandomNumber], TargetStart->GetActorTransform(), SpawnParams);
 		}
-		else if (RandomNumber < 80)
-		{
-			TargetWeapon = Weapon2;
-		}
-		else
-		{
-			TargetWeapon = Weapon3;
-		}
-		GetWorld()->SpawnActor<AActor>(TargetWeapon, TargetStart->GetActorTransform(), SpawnParams);
 	}
 }
 
 void ATPSGameMode::SpawnBuff()
 {
-	if (BuffStarts.Num() > 0)
+	for (int i = 0; i < BuffSpawnCount; i++)
 	{
-		AActor* TargetStart = BuffStarts[UKismetMathLibrary::RandomInteger(BuffStarts.Num())];
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
-		int32 RandomNumber = UKismetMathLibrary::RandomInteger(100);
-		TSubclassOf<AActor> TargetBuff;
-		if (RandomNumber < 30)
+		if (BuffStarts.Num() > 0 && Buffs.Num() > 0)
 		{
-			TargetBuff = Buff1;
+			AActor* TargetStart = BuffStarts[UKismetMathLibrary::RandomInteger(BuffStarts.Num())];
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
+			int32 RandomNumber = UKismetMathLibrary::RandomInteger(Buffs.Num());
+			GetWorld()->SpawnActor<AActor>(Buffs[RandomNumber], TargetStart->GetActorTransform(), SpawnParams);
 		}
-		else if (RandomNumber < 60)
-		{
-			TargetBuff = Buff2;
-		}
-		else if (RandomNumber < 80)
-		{
-			TargetBuff = Buff3;
-		}
-		else
-		{
-			TargetBuff = Buff4;
-		}
-		GetWorld()->SpawnActor<AActor>(TargetBuff, TargetStart->GetActorTransform(), SpawnParams);
 	}
 }
