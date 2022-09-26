@@ -16,6 +16,7 @@
 // Sets default values
 ATPSWeapon::ATPSWeapon()
 {
+	WeaponAttachSocket = "WeaponSocket1";
 	MuzzleSocketName = "MuzzleSocket";
 	FireDeltaTime = 0.1f;
 	AmmoMax = 30;

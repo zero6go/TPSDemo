@@ -23,7 +23,6 @@ ATPSCharacter::ATPSCharacter()
 	bAlive = true;
 
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
-	WeaponAttachSocket = "WeaponSocket";
 
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArmComp->bUsePawnControlRotation = true;
@@ -148,7 +147,7 @@ void ATPSCharacter::EquipWeapon(TSubclassOf<ATPSWeapon> WeaponType)
 		if (Weapon)
 		{
 			Weapon->SetOwner(this);
-			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocket);
+			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Weapon->WeaponAttachSocket);
 			FireDeltaTime = Weapon->FireDeltaTime;
 			AmmoMax = Weapon->AmmoMax;
 			AmmoNow = AmmoMax;
