@@ -38,7 +38,7 @@ ATPSCharacter::ATPSCharacter()
 	AimFOV = 50.0f;
 	AimInterpSpeed = 10.0f;
 	DefeatCount = 0;
-	CombatSpeedDefault = 0.9f;
+	CombatSpeedDefault = 0.8f;
 	CombatSpeed = CombatSpeedDefault;
 	bAim = false;
 	bFire = false;
@@ -136,7 +136,7 @@ void ATPSCharacter::EquipWeapon(TSubclassOf<ATPSWeapon> WeaponType)
 	{
 		if (Weapon)
 		{
-			StopAnimMontage();
+			StopAnim();
 			Weapon->Destroy();
 		}
 
