@@ -13,6 +13,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TPSGameMode.h"
+#include "TPSCombatWeapon.h"
 
 // Sets default values
 ATPSCharacter::ATPSCharacter()
@@ -59,6 +60,7 @@ void ATPSCharacter::BeginPlay()
 	if (GetLocalRole() == ROLE_Authority)
 	{
 		EquipWeapon(StartWeaponType);
+		EquipCombatWeapon(StartCombatWeaponType);
 	}
 }
 
@@ -153,6 +155,36 @@ void ATPSCharacter::EquipWeapon(TSubclassOf<ATPSWeapon> WeaponType)
 			AmmoNow = AmmoMax;
 			ReloadSpeed = Weapon->ReloadSpeed;
 			RecoilForce = Weapon->RecoilForce;
+		}
+	}
+}
+
+void ATPSCharacter::EquipCombatWeapon(TSubclassOf<ATPSCombatWeapon> WeaponType)
+{
+	if (bAlive)
+	{
+		if (CombatWeapon)
+		{
+			StopAnim();
+			CombatWeapon->Destroy();
+		}
+		if (CombatWeaponCommon)
+		{
+			CombatWeaponCommon->Destroy();
+		}
+
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		CombatWeapon = GetWorld()->SpawnActor<ATPSCombatWeapon>(WeaponType, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+		CombatWeaponCommon = GetWorld()->SpawnActor<ATPSCombatWeapon>(WeaponType, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+		if (CombatWeapon && CombatWeaponCommon)
+		{
+			CombatWeapon->SetOwner(this);
+			CombatWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, CombatWeapon->AttachSocket);
+			CombatWeaponCommon->SetOwner(this);
+			CombatWeaponCommon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, CombatWeaponCommon->CommonAttachSocket);
+			CombatWeapon->Weapon->SetVisibility(false);
 		}
 	}
 }
@@ -489,6 +521,8 @@ void ATPSCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 	DOREPLIFETIME(ATPSCharacter, bAlive);
 	DOREPLIFETIME(ATPSCharacter, DefeatCount);
 	DOREPLIFETIME(ATPSCharacter, Weapon);
+	DOREPLIFETIME(ATPSCharacter, CombatWeapon);
+	DOREPLIFETIME(ATPSCharacter, CombatWeaponCommon);
 	DOREPLIFETIME(ATPSCharacter, bAim);
 	DOREPLIFETIME(ATPSCharacter, AimOffset);
 	DOREPLIFETIME(ATPSCharacter, bJumping);

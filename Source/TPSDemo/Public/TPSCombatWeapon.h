@@ -30,6 +30,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	float CombatRadius;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	FName AttachSocket;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	FName CommonAttachSocket;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -24,6 +24,8 @@ ATPSCombatWeapon::ATPSCombatWeapon()
 
 	CombatDamage = 50.0f;
 	CombatRadius = 120.0f;
+	AttachSocket = "CombatSocket";
+	CommonAttachSocket = "CombatCommonSocket";
 }
 
 // Called when the game starts or when spawned

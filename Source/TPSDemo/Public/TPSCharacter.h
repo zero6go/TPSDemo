@@ -64,9 +64,15 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated, Category = "Weapon")
 	class ATPSWeapon* Weapon;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	TSubclassOf<ATPSWeapon> StartWeaponType;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated, Category = "CombatWeapon")
+	class ATPSCombatWeapon* CombatWeapon;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated, Category = "CombatWeapon")
+	class ATPSCombatWeapon* CombatWeaponCommon;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CombatWeapon")
+	TSubclassOf<ATPSCombatWeapon> StartCombatWeaponType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated, Category = "Weapon")
 	int32 AmmoMax;
@@ -111,6 +117,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void EquipWeapon(TSubclassOf<ATPSWeapon> WeaponType);
+	UFUNCTION(BlueprintCallable)
+	void EquipCombatWeapon(TSubclassOf<ATPSCombatWeapon> WeaponType);
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerAimBegin();
