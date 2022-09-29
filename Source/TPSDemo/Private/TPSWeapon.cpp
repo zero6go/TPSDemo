@@ -18,6 +18,7 @@ ATPSWeapon::ATPSWeapon()
 {
 	WeaponAttachSocket = "WeaponSocket1";
 	MuzzleSocketName = "MuzzleSocket";
+	BlockCheckSocketName = "BlockCheckSocket";
 	FireDeltaTime = 0.1f;
 	AmmoMax = 30;
 	ReloadSpeed = 1.0f;
@@ -76,7 +77,7 @@ void ATPSWeapon::Fire()
 		//准星射线命中
 		if (Hit.bBlockingHit)
 		{
-			FVector TraceBlockingStart = MeshComp->GetSocketLocation(MuzzleSocketName);
+			FVector TraceBlockingStart = MeshComp->GetSocketLocation(BlockCheckSocketName);
 			FVector TraceBlockingEnd = Hit.Location;
 			GetWorld()->LineTraceSingleByChannel(HitBlocking, TraceBlockingStart, TraceBlockingEnd, ECollisionChannel::ECC_GameTraceChannel6, QueryParams);
 			AActor* HitActor = Hit.GetActor();
@@ -105,7 +106,17 @@ void ATPSWeapon::Fire()
 		//准星射线未命中
 		else
 		{
-			NetMulticastPlayFireEffects(TraceEnd, Hit);
+			FVector TraceBlockingStart = MeshComp->GetSocketLocation(BlockCheckSocketName);
+			FVector TraceBlockingEnd = TraceEnd;
+			GetWorld()->LineTraceSingleByChannel(HitBlocking, TraceBlockingStart, TraceBlockingEnd, ECollisionChannel::ECC_GameTraceChannel6, QueryParams);
+			if (HitBlocking.bBlockingHit)
+			{
+				NetMulticastPlayFireEffects(TraceBlockingEnd, HitBlocking);
+			}
+			else
+			{
+				NetMulticastPlayFireEffects(TraceEnd, Hit);
+			}
 		}
 		APlayerController* PC= Cast<APlayerController>(Pawn->GetController());
 		if (PC)
