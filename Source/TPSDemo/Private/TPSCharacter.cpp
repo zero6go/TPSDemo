@@ -353,7 +353,7 @@ void ATPSCharacter::NetMulticastSpeedUpBegin_Implementation()
 		}
 		GetCharacterMovement()->MaxWalkSpeed = SpeedDefault * 2;
 		GetCharacterMovement()->MaxWalkSpeedCrouched = SpeedCrouchedDefault * 2;
-		CombatSpeed = CombatSpeedDefault * 2;
+		CombatSpeed = CombatSpeedDefault * 1.8;
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATPSCharacter::SpeedUpEnd, 10.0f, false);
 	}
@@ -437,6 +437,10 @@ void ATPSCharacter::NetMulticastInvisibilityBegin_Implementation()
 			UGameplayStatics::SpawnSoundAttached(InvisibilitySound, GetMesh());
 		}
 		GetMesh()->SetVisibility(false);
+		if (Weapon)
+		{
+			Weapon->MeshComp->SetVisibility(false);
+		}
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATPSCharacter::InvisibilityEnd, 5.0f, false);
 	}
@@ -463,6 +467,10 @@ void ATPSCharacter::InvisibilityBegin()
 void ATPSCharacter::InvisibilityEnd()
 {
 	GetMesh()->SetVisibility(true);
+	if (Weapon)
+	{
+		Weapon->MeshComp->SetVisibility(true);
+	}
 }
 
 // Called every frame
