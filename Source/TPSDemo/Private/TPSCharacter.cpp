@@ -88,7 +88,7 @@ void ATPSCharacter::AddControllerPitchInput(float value)
 
 void ATPSCharacter::CrouchBegin()
 {
-	if (bAlive)
+	if (bAlive && !GetMovementComponent()->IsFalling())
 	{
 		Crouch();
 	}
@@ -325,7 +325,7 @@ void ATPSCharacter::JumpEnd()
 	{
 		if (GetLocalRole() < ROLE_Authority)
 		{
-			ServerAimEnd();
+			ServerJumpEnd();
 			return;
 		}
 		bJumping = false;
