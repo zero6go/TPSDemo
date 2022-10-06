@@ -14,13 +14,13 @@ ATPSCombatWeapon::ATPSCombatWeapon()
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = Root;
 
-	Weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Weapon->SetupAttachment(RootComponent);
-	Weapon->SetCollisionProfileName("NoCollision");
-	Weapon->SetIsReplicated(true);
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	MeshComp->SetupAttachment(RootComponent);
+	MeshComp->SetCollisionProfileName("NoCollision");
+	MeshComp->SetIsReplicated(true);
 
 	Trace = CreateDefaultSubobject<USceneComponent>(TEXT("Trace"));
-	Trace->SetupAttachment(Weapon);
+	Trace->SetupAttachment(MeshComp);
 
 	CombatDamage = 50.0f;
 	CombatRadius = 120.0f;

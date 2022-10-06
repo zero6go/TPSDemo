@@ -69,8 +69,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated, Category = "CombatWeapon")
 	class ATPSCombatWeapon* CombatWeapon;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated, Category = "CombatWeapon")
-	class ATPSCombatWeapon* CombatWeaponCommon;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CombatWeapon")
 	TSubclassOf<ATPSCombatWeapon> StartCombatWeaponType;
 

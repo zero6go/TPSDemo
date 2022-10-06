@@ -168,23 +168,15 @@ void ATPSCharacter::EquipCombatWeapon(TSubclassOf<ATPSCombatWeapon> WeaponType)
 			StopAnim();
 			CombatWeapon->Destroy();
 		}
-		if (CombatWeaponCommon)
-		{
-			CombatWeaponCommon->Destroy();
-		}
 
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 		CombatWeapon = GetWorld()->SpawnActor<ATPSCombatWeapon>(WeaponType, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
-		CombatWeaponCommon = GetWorld()->SpawnActor<ATPSCombatWeapon>(WeaponType, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
-		if (CombatWeapon && CombatWeaponCommon)
+		if (CombatWeapon)
 		{
 			CombatWeapon->SetOwner(this);
-			CombatWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, CombatWeapon->AttachSocket);
-			CombatWeaponCommon->SetOwner(this);
-			CombatWeaponCommon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, CombatWeaponCommon->CommonAttachSocket);
-			CombatWeapon->Weapon->SetVisibility(false);
+			CombatWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, CombatWeapon->CommonAttachSocket);
 		}
 	}
 }
@@ -441,6 +433,10 @@ void ATPSCharacter::NetMulticastInvisibilityBegin_Implementation()
 		{
 			Weapon->MeshComp->SetVisibility(false);
 		}
+		if (CombatWeapon)
+		{
+			CombatWeapon->MeshComp->SetVisibility(false);
+		}
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATPSCharacter::InvisibilityEnd, 5.0f, false);
 	}
@@ -470,6 +466,10 @@ void ATPSCharacter::InvisibilityEnd()
 	if (Weapon)
 	{
 		Weapon->MeshComp->SetVisibility(true);
+	}
+	if (CombatWeapon)
+	{
+		CombatWeapon->MeshComp->SetVisibility(true);
 	}
 }
 
@@ -530,7 +530,6 @@ void ATPSCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 	DOREPLIFETIME(ATPSCharacter, DefeatCount);
 	DOREPLIFETIME(ATPSCharacter, Weapon);
 	DOREPLIFETIME(ATPSCharacter, CombatWeapon);
-	DOREPLIFETIME(ATPSCharacter, CombatWeaponCommon);
 	DOREPLIFETIME(ATPSCharacter, bAim);
 	DOREPLIFETIME(ATPSCharacter, AimOffset);
 	DOREPLIFETIME(ATPSCharacter, bJumping);
