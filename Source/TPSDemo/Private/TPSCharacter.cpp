@@ -387,6 +387,19 @@ bool ATPSCharacter::ServerSpeedDownBegin_Validate()
 	return true;
 }
 
+void ATPSCharacter::NetMulticastSpeedDownBegin_Implementation()
+{
+	if (SpeedDownSound)
+	{
+		UGameplayStatics::SpawnSoundAtLocation(this, SpeedDownSound, FVector(0.0f, 0.0f, 0.0f));
+	}
+}
+
+bool ATPSCharacter::NetMulticastSpeedDownBegin_Validate()
+{
+	return true;
+}
+
 void ATPSCharacter::SpeedDownBegin()
 {
 	if (GetLocalRole() < ROLE_Authority)
@@ -399,6 +412,7 @@ void ATPSCharacter::SpeedDownBegin()
 	{
 		GameMode->bInSpeedDown = true;
 		UGameplayStatics::SetGlobalTimeDilation(this, 0.5f);
+		NetMulticastSpeedDownBegin();
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATPSCharacter::SpeedDownEnd, 3.0f, false);
 	}

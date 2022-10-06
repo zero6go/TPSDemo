@@ -92,6 +92,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Sound")
 	USoundBase* InvisibilitySound;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Sound")
+	USoundBase* SpeedDownSound;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -156,6 +159,8 @@ protected:
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerSpeedDownBegin();
+	UFUNCTION(NetMulticast, Reliable, WithValidation)
+	void NetMulticastSpeedDownBegin();
 	UFUNCTION(BlueprintCallable)
 	void SpeedDownBegin();
 	void SpeedDownEnd();
