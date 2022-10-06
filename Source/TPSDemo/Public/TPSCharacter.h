@@ -135,6 +135,8 @@ protected:
 
 	void FireBegin();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+	void SynchronizeAmmo(int32 Ammo);
 	void FireEnd();
 
 	UFUNCTION(BlueprintCallable)

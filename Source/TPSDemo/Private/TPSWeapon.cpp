@@ -16,6 +16,16 @@
 // Sets default values
 ATPSWeapon::ATPSWeapon()
 {
+	SetReplicates(true);
+
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	RootComponent = Root;
+
+	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+	MeshComp->SetupAttachment(RootComponent);
+	MeshComp->SetCollisionProfileName("NoCollision");
+	MeshComp->SetIsReplicated(true);
+
 	WeaponAttachSocket = "WeaponSocket1";
 	MuzzleSocketName = "MuzzleSocket";
 	BlockCheckSocketName = "BlockCheckSocket";
@@ -25,11 +35,6 @@ ATPSWeapon::ATPSWeapon()
 	DamageBase = 20.0f;
 	ImpactForce = 1000.0f;
 	RecoilForce = 0.15f;
-
-	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
-	RootComponent = MeshComp;
-
-	SetReplicates(true);
 }
 
 // Called when the game starts or when spawned

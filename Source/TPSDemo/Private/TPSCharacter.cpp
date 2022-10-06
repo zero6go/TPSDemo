@@ -155,6 +155,7 @@ void ATPSCharacter::EquipWeapon(TSubclassOf<ATPSWeapon> WeaponType)
 			AmmoNow = AmmoMax;
 			ReloadSpeed = Weapon->ReloadSpeed;
 			RecoilForce = Weapon->RecoilForce;
+			Weapon->MeshComp->SetVisibility(GetMesh()->IsVisible());
 		}
 	}
 }
@@ -177,6 +178,7 @@ void ATPSCharacter::EquipCombatWeapon(TSubclassOf<ATPSCombatWeapon> WeaponType)
 		{
 			CombatWeapon->SetOwner(this);
 			CombatWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, CombatWeapon->CommonAttachSocket);
+			CombatWeapon->MeshComp->SetVisibility(GetMesh()->IsVisible());
 		}
 	}
 }
@@ -260,11 +262,22 @@ void ATPSCharacter::FireBegin()
 	}
 }
 
+void ATPSCharacter::SynchronizeAmmo_Implementation(int32 Ammo)
+{
+	AmmoNow = Ammo;
+}
+
+bool ATPSCharacter::SynchronizeAmmo_Validate(int32 Ammo)
+{
+	return true;
+}
+
 void ATPSCharacter::FireEnd()
 {
 	if (bAlive)
 	{
 		bFire = false;
+		SynchronizeAmmo(AmmoNow);
 	}
 }
 
